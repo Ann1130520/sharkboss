@@ -30,4 +30,5 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MY_NEWS_API_KEY: ${{ secrets.MY_NEWS_API_KEY }}
           MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+          RUN_MODE: morning  # 👉 新增這行：告知 main.py 這是每日晨報模式
         run: python main.py
