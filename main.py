@@ -24,7 +24,7 @@ warnings.filterwarnings('ignore')
 # ==========================================
 # 1. 系統與使用者設定區
 # ==========================================
-DB_PATH = "/content/drive/MyDrive/lobster_grandmaster.db"
+DB_PATH = "/content/drive/MyDrive/MAKE/lobster_grandmaster.db"
 if not os.path.exists(os.path.dirname(DB_PATH)):
     DB_PATH = "lobster_grandmaster.db" 
 
