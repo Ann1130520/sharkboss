@@ -473,16 +473,26 @@ def run_system():
 
     print("\n[預覽報告內容]：" + telegram_message)
 
-    # 🌟 推播引擎
+   # 🌟 推播引擎
+    run_mode = os.getenv("RUN_MODE", "morning") # 讀取 Github Actions 傳來的模式
+
     if MAKE_WEBHOOK_URL:
-        try:
-            req = requests.post(MAKE_WEBHOOK_URL, json={"report": telegram_message})
-            if req.status_code == 200:
-                print("\n✅ 偵測完成，晨間報告已成功推播至 Telegram！")
-            else:
-                print(f"\n⚠️ 發送失敗，Make 狀態碼：{req.status_code}")
-        except Exception as e:
-            print(f"\n❌ 傳送錯誤：{e}")
+        # 判斷是否為異常警示狀態 (利用你在 status_text 設定的 Emoji 符號當作開關)
+        is_alert_state = any(emoji in status_text for emoji in ["🚨", "⚠️", "🔥", "🐻", "☠️"])
+
+        # 巡邏兵靜默邏輯：如果是 30 分鐘巡邏，且市場無異常，就不發送！
+        if run_mode == "patrol" and not is_alert_state:
+            print(f"\n[巡邏兵報告] 🛡️ 目前市場狀態為 '{status_text}'，未達警示標準，靜默不推播。")
+        else:
+            try:
+                req = requests.post(MAKE_WEBHOOK_URL, json={"report": telegram_message})
+                if req.status_code == 200:
+                    mode_name = "晨間報告" if run_mode == "morning" else "🚨 巡邏兵緊急警報"
+                    print(f"\n✅ 偵測完成，{mode_name}已成功推播至 Telegram！")
+                else:
+                    print(f"\n⚠️ 發送失敗，Make 狀態碼：{req.status_code}")
+            except Exception as e:
+                print(f"\n❌ 傳送錯誤：{e}")
     else:
         print("\n⚠️ 未設定 MAKE_WEBHOOK_URL，僅在畫面上顯示。")
 
