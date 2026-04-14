@@ -28,5 +28,6 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         MY_NEWS_API_KEY: ${{ secrets.MY_NEWS_API_KEY }}
         MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
-        RUN_MODE: patrol  # 👉 新增這行：告知 main.py 這是 30 分鐘巡邏模式
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}  # 👉 新增這行：把 Hugging Face 金鑰傳給機器人
+        RUN_MODE: patrol  
       run: python main.py
