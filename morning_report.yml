@@ -1,0 +1,33 @@
+name: 🦞 龍蝦大師晨間巡邏
+
+on:
+  schedule:
+    # 台灣時間早上 7 點 = UTC 時間前一天晚上 23 點 (0分 23時)
+    - cron: '0 23 * * *'
+  workflow_dispatch:      # 保留這個，讓你可以隨時手動按按鈕測試
+  repository_dispatch:    # 預留給未來的 Telegram 遠端遙控後門
+    types: [telegram_trigger]
+
+jobs:
+  run-lobster-strategy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 下載程式碼
+        uses: actions/checkout@v4
+
+      - name: 🐍 設定 Python 環境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip' # 快取套件，讓每天啟動速度更快
+
+      - name: 📦 安裝依賴套件
+        run: |
+          pip install -r requirements.txt
+
+      - name: 🚀 執行龍蝦核心引擎
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MY_NEWS_API_KEY: ${{ secrets.MY_NEWS_API_KEY }}
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+        run: python main.py

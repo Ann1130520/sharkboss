@@ -1,0 +1,30 @@
+name: 🦞 龍蝦大師 30分鐘巡邏兵
+
+on:
+  schedule:
+    # 每 30 分鐘自動執行一次
+    - cron: '*/30 * * * *'  
+  workflow_dispatch: # 允許我們手動點擊按鈕執行
+
+jobs:
+  run-lobster:
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: 📥 下載程式碼
+      uses: actions/checkout@v3
+
+    - name: 🐍 安裝 Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: 📦 安裝龍蝦需要的套件
+      run: pip install -r requirements.txt
+
+    - name: 🚀 喚醒龍蝦大師執行任務
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        MY_NEWS_API_KEY: ${{ secrets.MY_NEWS_API_KEY }}
+        MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+      run: python main.py
