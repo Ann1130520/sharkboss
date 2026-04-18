@@ -2,7 +2,7 @@ name: 🦞 龍蝦大師 30分鐘巡邏兵
 
 on:
   schedule:
-    # 每 X 分鐘自動執行一次
+    # 每 30 分鐘自動執行一次
     - cron: '*/30 * * * *'  
   workflow_dispatch: # 允許我們手動點擊按鈕執行
 
